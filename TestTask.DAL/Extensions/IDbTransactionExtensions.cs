@@ -6,7 +6,7 @@ using TestTask.DAL.Models;
 
 namespace TestTask.DAL.Extensions;
 
-internal static class IDbTransactionExtensions
+public static class IDbTransactionExtensions
 {
     internal static void Insert<T>(this IDbTransaction transaction, string tableTitle, IEnumerable<T> data) where T : DataModel
     {

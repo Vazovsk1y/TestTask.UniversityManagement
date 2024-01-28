@@ -1,4 +1,4 @@
-﻿namespace TestTask.Domain.Constants;
+﻿namespace TestTask.DAL.Constants;
 
 public static class Constraints
 {

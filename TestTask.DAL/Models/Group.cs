@@ -2,7 +2,7 @@
 
 #pragma warning disable IDE1006
 #nullable disable
-public class GroupDataModel : DataModel
+public class Group : DataModel
 {
     public required Guid id { get; set; }
     public required Guid departament_id { get; init; }

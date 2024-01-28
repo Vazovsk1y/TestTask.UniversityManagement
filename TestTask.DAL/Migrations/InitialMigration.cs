@@ -2,7 +2,6 @@
 using TestTask.DAL.Constants;
 using TestTask.DAL.Extensions;
 using TestTask.DAL.Models;
-using TestTask.Domain.Constants;
 
 namespace TestTask.DAL.Migrations;
 
@@ -15,19 +14,19 @@ public class InitialMigration : Migration
 
         Delete.Index()
             .OnTable(Tables.Groups)
-            .OnColumn(nameof(GroupDataModel.departament_id));
+            .OnColumn(nameof(Group.departament_id));
 
         Delete.Index()
             .OnTable(Tables.Students)
-            .OnColumn(nameof(StudentDataModel.group_id));
+            .OnColumn(nameof(Student.group_id));
 
         Delete.Index()
             .OnTable(Tables.EducationContracts)
-            .OnColumn(nameof(EducationContractDataModel.student_id));
+            .OnColumn(nameof(EducationContract.student_id));
 
         Delete.Index()
             .OnTable(Tables.EducationContracts)
-            .OnColumn(nameof(EducationContractDataModel.speciality_id));
+            .OnColumn(nameof(EducationContract.speciality_id));
 
         #endregion
 
@@ -49,34 +48,34 @@ public class InitialMigration : Migration
 
         Create.Table(Tables.Departaments)
             .WithIdColumn()
-            .WithColumn(nameof(DepartamentDataModel.title)).AsString(Constraints.Departament.MaxTitleLength).NotNullable().Unique()
-            .WithColumn(nameof(DepartamentDataModel.description)).AsString(Constraints.Departament.MaxDescriptionLength).NotNullable();
+            .WithColumn(nameof(Departament.title)).AsString(Constraints.Departament.MaxTitleLength).NotNullable().Unique()
+            .WithColumn(nameof(Departament.description)).AsString(Constraints.Departament.MaxDescriptionLength).NotNullable();
 
         Create.Table(Tables.Groups)
             .WithIdColumn()
-            .WithColumn(nameof(GroupDataModel.title)).AsString(Constraints.Group.MaxTitleLength).NotNullable().Unique()
-            .WithColumn(nameof(GroupDataModel.departament_id)).AsGuid().NotNullable().ForeignKey(Tables.Departaments, "id");
+            .WithColumn(nameof(Group.title)).AsString(Constraints.Group.MaxTitleLength).NotNullable().Unique()
+            .WithColumn(nameof(Group.departament_id)).AsGuid().NotNullable().ForeignKey(Tables.Departaments, "id");
 
         Create.Table(Tables.Specialities)
             .WithIdColumn()
-            .WithColumn(nameof(SpecialityDataModel.title)).AsString(Constraints.Speciality.MaxTitleLength).NotNullable().Unique()
-            .WithColumn(nameof(SpecialityDataModel.code)).AsString(Constraints.Speciality.MaxCodeLength).NotNullable().Unique();
+            .WithColumn(nameof(Speciality.title)).AsString(Constraints.Speciality.MaxTitleLength).NotNullable().Unique()
+            .WithColumn(nameof(Speciality.code)).AsString(Constraints.Speciality.MaxCodeLength).NotNullable().Unique();
 
         Create.Table(Tables.Students)
             .WithIdColumn()
-            .WithColumn(nameof(StudentDataModel.first_name)).AsString(Constraints.Student.MaxNameLength).NotNullable()
-            .WithColumn(nameof(StudentDataModel.last_name)).AsString(Constraints.Student.MaxNameLength).NotNullable()
-            .WithColumn(nameof(StudentDataModel.birth_date)).AsDateTimeOffset().NotNullable()
-            .WithColumn(nameof(StudentDataModel.group_id)).AsGuid().ForeignKey(Tables.Groups, "id");
+            .WithColumn(nameof(Student.first_name)).AsString(Constraints.Student.MaxNameLength).NotNullable()
+            .WithColumn(nameof(Student.last_name)).AsString(Constraints.Student.MaxNameLength).NotNullable()
+            .WithColumn(nameof(Student.birth_date)).AsDateTimeOffset().NotNullable()
+            .WithColumn(nameof(Student.group_id)).AsGuid().ForeignKey(Tables.Groups, "id");
 
         Create.Table(Tables.EducationContracts)
             .WithIdColumn()
-            .WithColumn(nameof(EducationContractDataModel.admission_date)).AsDateTimeOffset().NotNullable()
-            .WithColumn(nameof(EducationContractDataModel.graduation_date)).AsDateTimeOffset().NotNullable()
-            .WithColumn(nameof(EducationContractDataModel.conclusion_date)).AsDateTimeOffset().NotNullable()
-            .WithColumn(nameof(EducationContractDataModel.education_form)).AsString().NotNullable()
-            .WithColumn(nameof(EducationContractDataModel.student_id)).AsGuid().ForeignKey(Tables.Students, "id")
-            .WithColumn(nameof(EducationContractDataModel.speciality_id)).AsGuid().ForeignKey(Tables.Specialities, "id");
+            .WithColumn(nameof(EducationContract.admission_date)).AsDateTimeOffset().NotNullable()
+            .WithColumn(nameof(EducationContract.graduation_date)).AsDateTimeOffset().NotNullable()
+            .WithColumn(nameof(EducationContract.conclusion_date)).AsDateTimeOffset().NotNullable()
+            .WithColumn(nameof(EducationContract.education_form)).AsString().NotNullable()
+            .WithColumn(nameof(EducationContract.student_id)).AsGuid().ForeignKey(Tables.Students, "id")
+            .WithColumn(nameof(EducationContract.speciality_id)).AsGuid().ForeignKey(Tables.Specialities, "id");
 
         #endregion
 
@@ -84,28 +83,28 @@ public class InitialMigration : Migration
 
         Create.Index()
             .OnTable(Tables.Groups)
-            .OnColumn(nameof(GroupDataModel.departament_id))
+            .OnColumn(nameof(Group.departament_id))
             .Ascending()
             .WithOptions()
             .NonClustered();
 
         Create.Index()
             .OnTable(Tables.Students)
-            .OnColumn(nameof(StudentDataModel.group_id))
+            .OnColumn(nameof(Student.group_id))
             .Ascending()
             .WithOptions()
             .NonClustered();
 
         Create.Index()
             .OnTable(Tables.EducationContracts)
-            .OnColumn(nameof(EducationContractDataModel.student_id))
+            .OnColumn(nameof(EducationContract.student_id))
             .Ascending()
             .WithOptions()
             .NonClustered();
 
         Create.Index()
             .OnTable(Tables.EducationContracts)
-            .OnColumn(nameof(EducationContractDataModel.speciality_id))
+            .OnColumn(nameof(EducationContract.speciality_id))
             .Ascending()
             .WithOptions()
             .NonClustered();

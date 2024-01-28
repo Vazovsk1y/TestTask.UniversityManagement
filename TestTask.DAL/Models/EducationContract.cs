@@ -2,7 +2,7 @@
 
 #pragma warning disable IDE1006
 #nullable disable
-public class EducationContractDataModel : DataModel
+public class EducationContract : DataModel
 {
     public required Guid id { get; set; }
     public required Guid student_id { get; init; }
