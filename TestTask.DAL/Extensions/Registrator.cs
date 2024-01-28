@@ -1,8 +1,10 @@
-﻿using FluentMigrator.Runner;
+﻿using Dapper;
+using FluentMigrator.Runner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using TestTask.DAL.Interfaces;
+using TestTask.DAL.Mappers;
 
 namespace TestTask.DAL.Extensions;
 
@@ -25,6 +27,9 @@ public static class Registrator
                 })
                 .AddLogging(e => e.AddFluentMigratorConsole());
 
+        SqlMapper.AddTypeHandler(new DapperSqlDateOnlyTypeHandler());
+
         return services;
     }
 }
+

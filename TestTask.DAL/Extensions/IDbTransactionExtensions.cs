@@ -2,7 +2,7 @@
 using Dapper.Transaction;
 using System.Data;
 using System.Reflection;
-using TestTask.DAL.Models;
+using TestTask.DAL.Models.Base;
 
 namespace TestTask.DAL.Extensions;
 

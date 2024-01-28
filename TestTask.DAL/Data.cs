@@ -14,8 +14,6 @@ internal static class Data
 
     private const int SPECIALITIES_COUNT = 50;
 
-    private const int EDUCATION_CONTRACTS_COUNT = STUDENTS_COUNT;
-
     private static readonly Faker<Departament> departamentFaker = new Faker<Departament>()
        .RuleFor(e => e.id, r => Guid.NewGuid())
        .RuleFor(e => e.title, r => 
@@ -49,7 +47,11 @@ internal static class Data
        .RuleFor(e => e.id, r => Guid.NewGuid())
        .RuleFor(e => e.first_name, r => r.Name.FirstName())
        .RuleFor(e => e.last_name, r => r.Name.LastName())
-       .RuleFor(e => e.birth_date, r => r.Person.DateOfBirth)
+       .RuleFor(e => e.birth_date, r => 
+       {
+           var birthDate = r.Person.DateOfBirth;
+           return new DateOnly(birthDate.Year, birthDate.Month, birthDate.Day);
+       })
        .RuleFor(e => e.group_id, r => r.PickRandom(Groups.Value.Select(e => e.id)));
        
     public static readonly Lazy<IReadOnlyCollection<Student>> Students = new(Enumerable.Range(0, STUDENTS_COUNT).Select(e => studentFaker.Generate()).ToList());
@@ -67,13 +69,32 @@ internal static class Data
     public static readonly Lazy<IReadOnlyCollection<Speciality>> Specialities = new(Enumerable.Range(0, SPECIALITIES_COUNT).Select(e => specialityFaker.Generate()).ToList());
 
     private static readonly Faker<EducationContract> educationContractFaker = new Faker<EducationContract>()
-       .RuleFor(e => e.id, r => Guid.NewGuid())
        .RuleFor(e => e.education_form, r => r.PickRandom(EducationForms.Enumerate()))
-       .RuleFor(e => e.admission_date, f => f.Date.RecentOffset())
-       .RuleFor(e => e.conclusion_date, f => DateTimeOffset.UtcNow)
-       .RuleFor(e => e.graduation_date, (f, u) => f.Date.BetweenOffset(u.admission_date, f.Date.FutureOffset()))
+       .RuleFor(e => e.admission_date, f => f.Date.RecentDateOnly())
+       .RuleFor(e => e.conclusion_date, f => DateOnly.FromDateTime(DateTime.Now))
+       .RuleFor(e => e.graduation_date, (f, u) => f.Date.BetweenDateOnly(u.admission_date, f.Date.FutureDateOnly()))
        .RuleFor(e => e.student_id, r => r.PickRandom(Students.Value.Select(e => e.id)))
        .RuleFor(e => e.speciality_id, r => r.PickRandom(Specialities.Value.Select(e => e.id)));
 
-    public static readonly Lazy<IReadOnlyCollection<EducationContract>> EducationContracts = new(Enumerable.Range(0, EDUCATION_CONTRACTS_COUNT).Select(e => educationContractFaker.Generate()).ToList());
+    public static readonly Lazy<IReadOnlyCollection<EducationContract>> EducationContracts = new(GenerateEducationContracts);
+
+    private static List<EducationContract> GenerateEducationContracts()
+    {
+        var result = new List<EducationContract>();
+        foreach (var item in Students.Value)
+        {
+            var contract = educationContractFaker.Generate();
+            result.Add(new EducationContract
+            {
+                admission_date = contract.admission_date,
+                conclusion_date = contract.conclusion_date,
+                student_id = item.id,
+                graduation_date = contract.graduation_date,
+                education_form = contract.education_form,
+                speciality_id = contract.speciality_id
+            });
+        }
+
+        return result;
+    }
 }

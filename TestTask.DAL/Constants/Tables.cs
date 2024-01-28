@@ -1,10 +1,10 @@
 ﻿namespace TestTask.DAL.Constants;
 
-internal static class Tables
+public static class Tables
 {
-    public const string Departaments = nameof(Departaments);
-    public const string Groups = nameof(Groups);
-    public const string Students = nameof(Students);
-    public const string EducationContracts = nameof(EducationContracts);
-    public const string Specialities = nameof(Specialities);
+    public const string Departaments = "departaments";
+    public const string Groups = "groups";
+    public const string Students = "students";
+    public const string EducationContracts = "education_contracts";
+    public const string Specialities = "specialities";
 }
