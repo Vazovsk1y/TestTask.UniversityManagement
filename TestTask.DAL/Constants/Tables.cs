@@ -7,4 +7,13 @@ public static class Tables
     public const string Students = "students";
     public const string EducationContracts = "education_contracts";
     public const string Specialities = "specialities";
+
+    public static IEnumerable<string> Enumerate()
+    {
+        yield return Departaments;
+        yield return Groups;
+        yield return Students;
+        yield return EducationContracts;
+        yield return Specialities;
+    }
 }

@@ -61,15 +61,7 @@ internal class PostgresDatabaseSeeder(
 
     private static bool IsAbleToApply(IDbConnection connection)
     {
-        bool[] results =
-        [
-            connection.ExecuteScalar<bool>($"SELECT count(1) FROM {Tables.Departaments}"), 
-            connection.ExecuteScalar<bool>($"SELECT count(1) FROM {Tables.Groups}"),
-            connection.ExecuteScalar<bool>($"SELECT count(1) FROM {Tables.EducationContracts}"),
-            connection.ExecuteScalar<bool>($"SELECT count(1) FROM {Tables.Specialities}"),
-            connection.ExecuteScalar<bool>($"SELECT count(1) FROM {Tables.Students}"),
-        ];
-
+        bool[] results = Tables.Enumerate().Select(table => connection.ExecuteScalar<bool>($"SELECT count(1) FROM {table}")).ToArray();
         return results.All(e => e is false);
     }
 }
