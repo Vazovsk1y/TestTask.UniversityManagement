@@ -64,4 +64,19 @@ public static class IDbTransactionExtensions
 
         await transaction.ExecuteAsync(sql, data);
     }
+
+    public static async Task UpdateByIdAsync<T>(this IDbTransaction transaction, string tableTitle, T data) where T : PrimaryKeyDataModel
+    {
+        var propertiesNames = typeof(T)
+           .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+           .Select(property => property.Name)
+           .ToList();
+
+        propertiesNames.Remove(nameof(data.id));
+
+        string setStatements = string.Join($",{Environment.NewLine}", propertiesNames.Select(name => $"{name} = @{name}"));
+        string sql = $"UPDATE {tableTitle} SET \n{setStatements} \nWHERE {nameof(data.id)} = @{nameof(data.id)}";
+
+        await transaction.ExecuteAsync(sql, data);
+    }
 }
