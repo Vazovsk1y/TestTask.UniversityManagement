@@ -20,6 +20,7 @@ app.UseSwaggerUI();
 app.UseHttpsRedirection();
 
 app.MapStudentEndpoints();
+app.MapSpecialityEndpoints();
 
 if (app.Environment.IsDevelopment())
 {

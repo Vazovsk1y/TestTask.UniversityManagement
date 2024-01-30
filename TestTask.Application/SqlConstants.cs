@@ -32,4 +32,14 @@ public static class SqlConstants
                INNER JOIN {Tables.Specialities} sp ON ec.{nameof(EducationContract.speciality_id)} = sp.{nameof(Speciality.id)}
                WHERE s.{nameof(Student.id)} = @id";
     }
+
+    public static class SpecialityService
+    {
+        public static readonly string GET_ALL_SPECIALITY_DTO_SQL = $@"
+               SELECT 
+                   sp.{nameof(Speciality.id)} AS {nameof(SpecialityDTO.Id)}, 
+                   sp.{nameof(Speciality.title)} AS {nameof(SpecialityDTO.Title)}, 
+                   sp.{nameof(Speciality.code)} AS {nameof(SpecialityDTO.Code)}
+               FROM {Tables.Specialities} sp";
+    }
 }
