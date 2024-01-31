@@ -13,6 +13,8 @@ public static class Registrator
         services.AddScoped<IStudentService, StudentService>();
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddScoped<ISpecialityService, SpecialityService>();
+        services.AddScoped<IEducationContractService, EducationContractService>();
+        services.AddScoped<ICalendar, Calendar>();
 
         return services;
     }

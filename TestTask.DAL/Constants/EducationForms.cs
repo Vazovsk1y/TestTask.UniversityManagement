@@ -1,6 +1,6 @@
 ﻿namespace TestTask.DAL.Constants;
 
-internal static class EducationForms
+public static class EducationForms
 {
     public const string Budget = nameof(Budget);
     public const string Contract = nameof(Contract);

@@ -9,6 +9,29 @@ namespace TestTask.DAL.Extensions;
 
 public static class IDbConnectionExtensions
 {
+    public static async Task<bool> IsExistsByAsync<T>(this IDbConnection connection, string tableTitle, string byColumnName, T byValue)
+    {
+        string sql = $"SELECT count(1) FROM {tableTitle} WHERE {byColumnName}=@{byColumnName}";
+        var parametrs = new DynamicParameters();
+        parametrs.Add($"{byColumnName}", byValue);
+
+        return await connection.ExecuteScalarAsync<bool>(sql, parametrs);
+    }
+    public static async Task<T?> GetByOrDefaultAsync<T, TBy>(this IDbConnection connection, string tableTitle, string byColumnName, TBy byValue) where T : DataModel
+    {
+        var propertiesNames = typeof(T)
+           .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+           .Select(property => property.Name)
+           .ToArray();
+
+        string columnTitlesRaw = string.Join(',', propertiesNames);
+        string sql = $"SELECT {columnTitlesRaw} FROM {tableTitle} WHERE {byColumnName}=@{byColumnName}";
+
+        var parametrs = new DynamicParameters();
+        parametrs.Add($"{byColumnName}", byValue);
+
+        return await connection.QuerySingleOrDefaultAsync<T>(sql, parametrs);
+    }
     public static async Task<T?> GetByIdOrDefaultAsync<T>(this IDbConnection connection, string tableTitle, Guid id, Expression<Func<T, object[]>> selector) where T : DataModel
     {
         if (selector.Body is NewArrayExpression memberInitExpression)

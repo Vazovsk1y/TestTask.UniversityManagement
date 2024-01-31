@@ -79,4 +79,24 @@ public static class IDbTransactionExtensions
 
         await transaction.ExecuteAsync(sql, data);
     }
+
+    public static async Task UpdateByAsync<T>(this IDbTransaction transaction, string tableTitle, string byColumnName, T data) where T : DataModel
+    {
+        var propertiesNames = typeof(T)
+           .GetProperties(BindingFlags.Public | BindingFlags.Instance)
+           .Select(property => property.Name)
+           .ToList();
+
+        if (!propertiesNames.Contains(byColumnName))
+        {
+            throw new ArgumentException("Invalid column name.");
+        }
+
+        propertiesNames.Remove(byColumnName);
+
+        string setStatements = string.Join($",{Environment.NewLine}", propertiesNames.Select(name => $"{name} = @{name}"));
+        string sql = $"UPDATE {tableTitle} SET \n{setStatements} \nWHERE {byColumnName} = @{byColumnName}";
+
+        await transaction.ExecuteAsync(sql, data);
+    }
 }

@@ -13,6 +13,16 @@ public static class Mapper
             studentUpdateModel.LastName, 
             DateOnly.FromDateTime(studentUpdateModel.BirthDate));
     }
+
+    public static EducationContractRenewalDTO ToDTO(this EducationContractRenewalModel model)
+    {
+        return new EducationContractRenewalDTO(
+            model.StudentId, 
+            model.SpecialityId, 
+            DateOnly.FromDateTime(model.AdmissionDate), 
+            DateOnly.FromDateTime(model.GraduationDate), 
+            model.EducationForm);
+    }
 }
 
 
