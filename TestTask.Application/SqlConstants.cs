@@ -42,4 +42,30 @@ public static class SqlConstants
                    sp.{nameof(Speciality.code)} AS {nameof(SpecialityDTO.Code)}
                FROM {Tables.Specialities} sp";
     }
+
+    public static class DepartamentService
+    {
+        public static readonly string GET_ALL_DEPARTAMENT_DTO_WITH_PAGING_SQL = $@"
+              SELECT 
+                  d.{nameof(Departament.id)} AS {nameof(DepartamentDTO.Id)},
+                  d.{nameof(Departament.title)} AS {nameof(DepartamentDTO.Title)},
+                  d.{nameof(Departament.description)} AS {nameof(DepartamentDTO.Description)},
+                  g.{nameof(Group.id)} AS {nameof(GroupDTO.GroupId)},
+                  g.{nameof(Group.title)} AS {nameof(GroupDTO.Title)},
+                  COUNT(s.{nameof(Student.id)}) AS {nameof(GroupDTO.StudentsCount)}
+              FROM (
+                  SELECT 
+                      d.{nameof(Departament.id)},
+                      d.{nameof(Departament.title)},
+                      d.{nameof(Departament.description)}
+                  FROM {Tables.Departaments} as d
+                  ORDER BY d.{nameof(Departament.title)}
+                  OFFSET @offset ROWS
+                  FETCH NEXT @limit ROWS ONLY
+              ) AS d
+              LEFT JOIN {Tables.Groups} as g ON g.{nameof(Group.departament_id)} = d.{nameof(Departament.id)}
+              LEFT JOIN {Tables.Students} as s ON s.{nameof(Student.group_id)} = g.{nameof(Group.id)}
+              GROUP BY g.{nameof(Group.id)}, d.{nameof(Departament.id)}, d.{nameof(Departament.title)}, d.{nameof(Departament.description)}
+              ORDER BY d.{nameof(Departament.title)}";
+    }
 }

@@ -22,6 +22,7 @@ app.UseHttpsRedirection();
 app.MapStudentEndpoints();
 app.MapSpecialityEndpoints();
 app.MapEducationContractEndpoints();
+app.MapDepartamentEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
