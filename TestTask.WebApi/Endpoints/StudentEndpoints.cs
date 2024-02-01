@@ -14,6 +14,7 @@ public static class StudentEndpoints
 
         group.MapGet("{id}", GetStudentById);
         group.MapPut(string.Empty, UpdateStudent);
+        group.MapDelete("{id}", ExpelStudent);
     }
 
     private static async Task<IResult> GetStudentById(Guid id, IStudentService studentService, CancellationToken cancellationToken)
@@ -26,6 +27,12 @@ public static class StudentEndpoints
     {
         var dto = studentUpdateModel.ToDTO();
         var result = await studentService.UpdateAsync(dto, cancellationToken);
+        return result.IsSuccess ? TypedResults.Ok() : TypedResults.BadRequest(result.ErrorMessage);
+    }
+
+    private static async Task<IResult> ExpelStudent(Guid id, IStudentService studentService, CancellationToken cancellationToken)
+    {
+        var result = await studentService.ExpelAsync(id, cancellationToken);
         return result.IsSuccess ? TypedResults.Ok() : TypedResults.BadRequest(result.ErrorMessage);
     }
 }

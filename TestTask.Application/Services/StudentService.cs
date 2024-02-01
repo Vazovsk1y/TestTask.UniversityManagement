@@ -20,6 +20,32 @@ internal class StudentService(
     private readonly IValidator<StudentUpdateDTO> _studentUpdateDTOvalidator = studentUpdateDTOvalidator;
     private readonly ILogger _logger = logger;
 
+    public async Task<Result> ExpelAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        using var connection = _dbConnectionFactory.Create();
+        connection.Open();
+
+        bool studentExists = await connection.IsExistsByIdAsync(Tables.Students, id);
+        if (!studentExists)
+        {
+            return Result.Failure<StudentDTO>(Errors.EntityNotFound(nameof(Student)));
+        }
+
+        using var transaction = connection.BeginTransaction();
+        try
+        {
+            await transaction.DeleteByIdAsync(Tables.Students, id);
+            transaction.Commit();
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
+
+        return Result.Success();
+    }
+
     public async Task<Result<StudentDTO>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         using var connection = _dbConnectionFactory.Create();

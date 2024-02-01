@@ -1,4 +1,5 @@
 ﻿using FluentMigrator;
+using System.Data;
 using TestTask.DAL.Constants;
 using TestTask.DAL.Extensions;
 using TestTask.DAL.Models;
@@ -81,10 +82,10 @@ public class InitialMigration : Migration
             .WithColumn(nameof(Student.first_name)).AsString(Constraints.Student.MaxNameLength).NotNullable()
             .WithColumn(nameof(Student.last_name)).AsString(Constraints.Student.MaxNameLength).NotNullable()
             .WithColumn(nameof(Student.birth_date)).AsDate().NotNullable()
-            .WithColumn(nameof(Student.group_id)).AsGuid().ForeignKey(Tables.Groups, "id");
+            .WithColumn(nameof(Student.group_id)).AsGuid().ForeignKey(Tables.Groups, "id").OnDelete(Rule.Cascade);
 
         Create.Table(Tables.EducationContracts)
-            .WithColumn(nameof(EducationContract.student_id)).AsGuid().ForeignKey(Tables.Students, "id").PrimaryKey()
+            .WithColumn(nameof(EducationContract.student_id)).AsGuid().ForeignKey(Tables.Students, "id").OnDelete(Rule.Cascade).PrimaryKey()
             .WithColumn(nameof(EducationContract.speciality_id)).AsGuid().ForeignKey(Tables.Specialities, "id")
             .WithColumn(nameof(EducationContract.admission_date)).AsDate().NotNullable()
             .WithColumn(nameof(EducationContract.graduation_date)).AsDate().NotNullable()

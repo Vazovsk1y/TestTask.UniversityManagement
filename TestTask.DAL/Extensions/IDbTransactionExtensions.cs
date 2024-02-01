@@ -65,6 +65,11 @@ public static class IDbTransactionExtensions
         await transaction.ExecuteAsync(sql, data);
     }
 
+    public static async Task DeleteByIdAsync(this IDbTransaction transaction, string tableTitle, Guid id) 
+    {
+        string sql = $"DELETE FROM {tableTitle} WHERE {nameof(PrimaryKeyDataModel.id)}=@{nameof(PrimaryKeyDataModel.id)}";
+        await transaction.ExecuteAsync(sql, new { id });
+    }
     public static async Task UpdateByIdAsync<T>(this IDbTransaction transaction, string tableTitle, T data) where T : PrimaryKeyDataModel
     {
         var propertiesNames = typeof(T)

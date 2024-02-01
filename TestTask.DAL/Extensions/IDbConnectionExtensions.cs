@@ -17,6 +17,11 @@ public static class IDbConnectionExtensions
 
         return await connection.ExecuteScalarAsync<bool>(sql, parametrs);
     }
+    public static async Task<bool> IsExistsByIdAsync(this IDbConnection connection, string tableTitle, Guid id)
+    {
+        string sql = $"SELECT count(1) FROM {tableTitle} WHERE {nameof(PrimaryKeyDataModel.id)}=@{nameof(PrimaryKeyDataModel.id)}";
+        return await connection.ExecuteScalarAsync<bool>(sql, new { id });
+    }
     public static async Task<T?> GetByOrDefaultAsync<T, TBy>(this IDbConnection connection, string tableTitle, string byColumnName, TBy byValue) where T : DataModel
     {
         var propertiesNames = typeof(T)
