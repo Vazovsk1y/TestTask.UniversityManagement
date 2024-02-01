@@ -50,7 +50,7 @@ public static class IDbTransactionExtensions
 
         await transaction.ExecuteAsync(sql, data);
     }
-    internal static async Task InsertAsync<T>(this IDbTransaction transaction, string tableTitle, T data) where T : DataModel
+    public static async Task InsertAsync<T>(this IDbTransaction transaction, string tableTitle, T data) where T : DataModel
     {
         var propertiesNames = typeof(T)
             .GetProperties(BindingFlags.Public | BindingFlags.Instance)

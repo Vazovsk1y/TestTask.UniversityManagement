@@ -23,6 +23,11 @@ public static class Mapper
             DateOnly.FromDateTime(model.GraduationDate), 
             model.EducationForm);
     }
+
+    public static SpecialityAddDTO ToDTO(this SpecialityAddModel model)
+    {
+        return new SpecialityAddDTO(model.Title, model.Code);
+    }
 }
 
 
