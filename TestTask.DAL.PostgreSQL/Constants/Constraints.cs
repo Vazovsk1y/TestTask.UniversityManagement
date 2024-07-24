@@ -1,8 +1,8 @@
-﻿namespace TestTask.DAL.Constants;
+﻿namespace TestTask.DAL.PostgreSQL.Constants;
 
 public static class Constraints
 {
-    public static class Departament
+    public static class Department
     {
         public const int MaxTitleLength = 75;
 

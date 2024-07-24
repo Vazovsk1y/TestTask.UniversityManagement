@@ -3,9 +3,9 @@ using MikesPaging.AspNetCore.Common;
 using TestTask.Application.Contracts;
 using TestTask.Application.Services.Interfaces;
 using TestTask.Application.Shared;
-using TestTask.DAL.Constants;
-using TestTask.DAL.Interfaces;
-using TestTask.DAL.Models;
+using TestTask.DAL.PostgreSQL.Constants;
+using TestTask.DAL.PostgreSQL.Interfaces;
+using TestTask.DAL.PostgreSQL.Models;
 
 namespace TestTask.Application.Services;
 
@@ -18,7 +18,7 @@ internal class DepartamentService(IDbConnectionFactory dbConnectionFactory) : ID
         using var connection = _dbConnectionFactory.Create();
         connection.Open();
 
-        int totalDepartamentsCount = await connection.ExecuteScalarAsync<int>($"SELECT COUNT(d.{nameof(Departament.id)}) FROM {Tables.Departaments} AS d");
+        int totalDepartamentsCount = await connection.ExecuteScalarAsync<int>($"SELECT COUNT(d.{nameof(Department.id)}) FROM {Tables.Departments} AS d");
         int limit = pagingOptions.PageSize;
         int offset = (pagingOptions.PageIndex - 1) * pagingOptions.PageSize;
 

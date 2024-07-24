@@ -4,10 +4,10 @@ using Microsoft.Extensions.Logging;
 using TestTask.Application.Contracts;
 using TestTask.Application.Services.Interfaces;
 using TestTask.Application.Shared;
-using TestTask.DAL.Constants;
-using TestTask.DAL.Extensions;
-using TestTask.DAL.Interfaces;
-using TestTask.DAL.Models;
+using TestTask.DAL.PostgreSQL.Constants;
+using TestTask.DAL.PostgreSQL.Extensions;
+using TestTask.DAL.PostgreSQL.Interfaces;
+using TestTask.DAL.PostgreSQL.Models;
 
 namespace TestTask.Application.Services;
 

@@ -1,7 +1,7 @@
 ﻿using Dapper;
 using System.Data;
 
-namespace TestTask.DAL.Mappers;
+namespace TestTask.DAL.PostgreSQL.Mappers;
 
 public class DapperSqlDateOnlyTypeHandler : SqlMapper.TypeHandler<DateOnly>
 {

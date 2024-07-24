@@ -1,9 +1,9 @@
-using TestTask.DAL.Extensions;
 using TestTask.Application.Extensions;
 using TestTask.WebApi.Extensions;
 using TestTask.WebApi.Endpoints;
 using TestTask.WebApi;
 using Serilog;
+using TestTask.DAL.PostgreSQL.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

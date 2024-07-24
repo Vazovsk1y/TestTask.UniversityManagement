@@ -1,4 +1,4 @@
-﻿namespace TestTask.DAL.Constants;
+﻿namespace TestTask.DAL.PostgreSQL.Constants;
 
 public static class EducationForms
 {

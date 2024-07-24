@@ -3,10 +3,10 @@ using FluentMigrator.Runner;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using TestTask.DAL.Interfaces;
-using TestTask.DAL.Mappers;
+using TestTask.DAL.PostgreSQL.Interfaces;
+using TestTask.DAL.PostgreSQL.Mappers;
 
-namespace TestTask.DAL.Extensions;
+namespace TestTask.DAL.PostgreSQL.Extensions;
 
 public static class Registrator
 {

@@ -1,10 +1,10 @@
 ﻿using FluentMigrator;
 using System.Data;
-using TestTask.DAL.Constants;
-using TestTask.DAL.Extensions;
-using TestTask.DAL.Models;
+using TestTask.DAL.PostgreSQL.Extensions;
+using TestTask.DAL.PostgreSQL.Constants;
+using TestTask.DAL.PostgreSQL.Models;
 
-namespace TestTask.DAL.Migrations;
+namespace TestTask.DAL.PostgreSQL.Migrations;
 
 [Migration(1, description: "Initial migration that creates all required tables, constraints and indexes.")]
 public class InitialMigration : Migration
@@ -42,8 +42,8 @@ public class InitialMigration : Migration
             .OnColumn(nameof(Group.id));
 
         Delete.Index()
-            .OnTable(Tables.Departaments)
-            .OnColumn(nameof(Departament.id));
+            .OnTable(Tables.Departments)
+            .OnColumn(nameof(Department.id));
 
         #endregion
 
@@ -53,7 +53,7 @@ public class InitialMigration : Migration
         Delete.Table(Tables.Students);
         Delete.Table(Tables.Specialities);
         Delete.Table(Tables.Groups);
-        Delete.Table(Tables.Departaments);
+        Delete.Table(Tables.Departments);
 
         #endregion
     }
@@ -62,15 +62,15 @@ public class InitialMigration : Migration
     {
         #region --Tables--
 
-        Create.Table(Tables.Departaments)
+        Create.Table(Tables.Departments)
             .WithPrimaryKeyColumn()
-            .WithColumn(nameof(Departament.title)).AsString(Constraints.Departament.MaxTitleLength).NotNullable().Unique()
-            .WithColumn(nameof(Departament.description)).AsString(Constraints.Departament.MaxDescriptionLength).NotNullable();
+            .WithColumn(nameof(Department.title)).AsString(Constraints.Department.MaxTitleLength).NotNullable().Unique()
+            .WithColumn(nameof(Department.description)).AsString(Constraints.Department.MaxDescriptionLength).NotNullable();
 
         Create.Table(Tables.Groups)
             .WithPrimaryKeyColumn()
             .WithColumn(nameof(Group.title)).AsString(Constraints.Group.MaxTitleLength).NotNullable().Unique()
-            .WithColumn(nameof(Group.departament_id)).AsGuid().NotNullable().ForeignKey(Tables.Departaments, "id");
+            .WithColumn(nameof(Group.departament_id)).AsGuid().NotNullable().ForeignKey(Tables.Departments, "id");
 
         Create.Table(Tables.Specialities)
             .WithPrimaryKeyColumn()
@@ -97,8 +97,8 @@ public class InitialMigration : Migration
         #region --Indexes--
 
         Create.Index()
-            .OnTable(Tables.Departaments)
-            .OnColumn(nameof(Departament.id))
+            .OnTable(Tables.Departments)
+            .OnColumn(nameof(Department.id))
             .Ascending()
             .WithOptions()
             .Clustered();

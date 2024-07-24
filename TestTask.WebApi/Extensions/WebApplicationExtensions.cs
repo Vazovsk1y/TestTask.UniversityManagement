@@ -1,5 +1,5 @@
 ﻿using FluentMigrator.Runner;
-using TestTask.DAL.Interfaces;
+using TestTask.DAL.PostgreSQL.Interfaces;
 
 namespace TestTask.WebApi.Extensions;
 

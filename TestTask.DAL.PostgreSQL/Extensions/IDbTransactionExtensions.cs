@@ -1,10 +1,9 @@
-﻿using Dapper;
-using Dapper.Transaction;
+﻿using Dapper.Transaction;
 using System.Data;
 using System.Reflection;
-using TestTask.DAL.Models.Base;
+using TestTask.DAL.PostgreSQL.Models.Base;
 
-namespace TestTask.DAL.Extensions;
+namespace TestTask.DAL.PostgreSQL.Extensions;
 
 public static class IDbTransactionExtensions
 {

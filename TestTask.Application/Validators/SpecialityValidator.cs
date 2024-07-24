@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using TestTask.Application.Contracts;
-using TestTask.DAL.Constants;
+using TestTask.DAL.PostgreSQL.Constants;
 
 namespace TestTask.Application.Validators;
 

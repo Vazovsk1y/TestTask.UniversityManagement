@@ -1,6 +1,6 @@
 ﻿using System.Data;
 
-namespace TestTask.DAL.Interfaces;
+namespace TestTask.DAL.PostgreSQL.Interfaces;
 
 public interface IDbConnectionFactory
 {

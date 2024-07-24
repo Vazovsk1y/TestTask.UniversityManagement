@@ -1,11 +1,10 @@
 ﻿using Dapper;
-using Dapper.Transaction;
 using System.Data;
 using System.Linq.Expressions;
 using System.Reflection;
-using TestTask.DAL.Models.Base;
+using TestTask.DAL.PostgreSQL.Models.Base;
 
-namespace TestTask.DAL.Extensions;
+namespace TestTask.DAL.PostgreSQL.Extensions;
 
 public static class IDbConnectionExtensions
 {
@@ -93,16 +92,12 @@ public static class IDbConnectionExtensions
 
     private static string GetPropertyNameFromExpression(Expression expression)
     {
-        if (expression is UnaryExpression unaryExpression && unaryExpression.Operand is MemberExpression memberExpression)
+        return expression switch
         {
-            return memberExpression.Member.Name;
-        }
-
-        if (expression is MemberExpression memberExpressionWithoutConversion)
-        {
-            return memberExpressionWithoutConversion.Member.Name;
-        }
-
-        throw new ArgumentException("Invalid expression.");
+            UnaryExpression { Operand: MemberExpression memberExpression } =>
+                memberExpression.Member.Name,
+            MemberExpression memberExpressionWithoutConversion => memberExpressionWithoutConversion.Member.Name,
+            _ => throw new ArgumentException("Invalid expression.")
+        };
     }
 }

@@ -1,17 +1,15 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Npgsql;
 using System.Data;
-using TestTask.DAL.Interfaces;
+using TestTask.DAL.PostgreSQL.Interfaces;
 
-namespace TestTask.DAL;
+namespace TestTask.DAL.PostgreSQL;
 
 internal class NpgsqlDbConnectionFactory(IConfiguration configuration) : IDbConnectionFactory
 {
-    private readonly IConfiguration _configuration = configuration;
-
     public IDbConnection Create()
     {
-        string connectionString = _configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string is not found.");
+        string connectionString = configuration.GetConnectionString("Default") ?? throw new InvalidOperationException("Connection string is not found.");
         return new NpgsqlConnection(connectionString);
     }
 }

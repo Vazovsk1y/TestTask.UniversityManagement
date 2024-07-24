@@ -1,9 +1,9 @@
 ﻿using FluentMigrator.Builders.Create.Table;
-using TestTask.DAL.Models.Base;
+using TestTask.DAL.PostgreSQL.Models.Base;
 
-namespace TestTask.DAL.Extensions;
+namespace TestTask.DAL.PostgreSQL.Extensions;
 
-internal static class Extensions
+internal static class Common
 {
     internal static ICreateTableColumnOptionOrWithColumnSyntax WithPrimaryKeyColumn(this ICreateTableWithColumnSyntax tableWithColumnSyntax)
     {

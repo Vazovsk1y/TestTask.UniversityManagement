@@ -1,4 +1,4 @@
-﻿namespace TestTask.DAL.Interfaces;
+﻿namespace TestTask.DAL.PostgreSQL.Interfaces;
 
 public interface IDatabaseSeeder
 {

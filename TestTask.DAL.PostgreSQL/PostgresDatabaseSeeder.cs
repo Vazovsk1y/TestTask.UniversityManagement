@@ -2,23 +2,19 @@
 using Microsoft.Extensions.Logging;
 using System.Data;
 using System.Diagnostics;
-using TestTask.DAL.Constants;
-using TestTask.DAL.Interfaces;
-using Dapper.Transaction;
-using TestTask.DAL.Extensions;
+using TestTask.DAL.PostgreSQL.Extensions;
+using TestTask.DAL.PostgreSQL.Constants;
+using TestTask.DAL.PostgreSQL.Interfaces;
 
-namespace TestTask.DAL;
+namespace TestTask.DAL.PostgreSQL;
 
 internal class PostgresDatabaseSeeder(
     IDbConnectionFactory connectionFactory, 
     ILogger<PostgresDatabaseSeeder> logger) : IDatabaseSeeder
 {
-    private readonly IDbConnectionFactory _connectionFactory = connectionFactory;
-    private readonly ILogger<PostgresDatabaseSeeder> _logger = logger;
-
     public void Apply()
     {
-        using var connection = _connectionFactory.Create();
+        using var connection = connectionFactory.Create();
         connection.Open();
 
         if (IsAbleToApply(connection))
@@ -29,17 +25,17 @@ internal class PostgresDatabaseSeeder(
 
     private void Seed(IDbConnection connection)
     {
-        _logger.LogInformation("Data seeding started.");
+        logger.LogInformation("Data seeding started.");
         var stopwatch = new Stopwatch();
         stopwatch.Start();
 
         using var transaction = connection.BeginTransaction();
-        _logger.LogInformation("Transaction began.");
+        logger.LogInformation("Transaction began.");
 
         bool transactionCommited = true;
         try
         {
-            transaction.Insert(Tables.Departaments, Data.Departaments.Value);
+            transaction.Insert(Tables.Departments, Data.Departments.Value);
             transaction.Insert(Tables.Groups, Data.Groups.Value);
             transaction.Insert(Tables.Students, Data.Students.Value);
             transaction.Insert(Tables.Specialities, Data.Specialities.Value);
@@ -51,12 +47,12 @@ internal class PostgresDatabaseSeeder(
         {
             transaction.Rollback();
             transactionCommited = false;
-            _logger.LogError(ex, "Something went wrong.");
+            logger.LogError(ex, "Something went wrong.");
         }
 
         stopwatch.Stop();
-        _logger.LogInformation("Transaction {transactionCommited}.", transactionCommited ? "commited" : "rollbacked");
-        _logger.LogInformation("Data seeding ended. Times spent: [{totalSeconds}]", stopwatch.Elapsed.TotalSeconds);
+        logger.LogInformation("Transaction {transactionCommited}.", transactionCommited ? "commited" : "rollbacked");
+        logger.LogInformation("Data seeding ended. Times spent: [{totalSeconds}]", stopwatch.Elapsed.TotalSeconds);
     }
 
     private static bool IsAbleToApply(IDbConnection connection)
