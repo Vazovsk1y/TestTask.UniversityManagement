@@ -5,18 +5,18 @@ using TestTask.Application.Services.Interfaces;
 
 namespace TestTask.WebApi.Endpoints;
 
-public static class DepartamentEndpoints
+public static class DepartmentEndpoints
 {
-    public static readonly string Route = $"{Constants.GlobalRoute}/departaments";
+    private const string Route = $"{Constants.GlobalRoute}/departments";
 
-    public static void MapDepartamentEndpoints(this IEndpointRouteBuilder builder)
+    public static void MapDepartmentEndpoints(this IEndpointRouteBuilder builder)
     {
         var group = builder.MapGroup(Route);
 
-        group.MapGet(string.Empty, GetDepartamentsPage);
+        group.MapGet(string.Empty, GetDepartmentsPage);
     }
 
-    private static async Task<IResult> GetDepartamentsPage([AsParameters]PagingOptionsModel model, [FromServices]IDepartmentService departmentService, CancellationToken cancellationToken)
+    private static async Task<IResult> GetDepartmentsPage([AsParameters]PagingOptionsModel model, [FromServices]IDepartmentService departmentService, CancellationToken cancellationToken)
     {
         var dtoResult = model.ToOptions();
         if (dtoResult.IsFailure)

@@ -6,7 +6,7 @@ namespace TestTask.WebApi.Endpoints;
 
 public static class StudentEndpoints
 {
-    public static readonly string Route = $"{Constants.GlobalRoute}/students";
+    private const string Route = $"{Constants.GlobalRoute}/students";
 
     public static void MapStudentEndpoints(this IEndpointRouteBuilder builder)
     {

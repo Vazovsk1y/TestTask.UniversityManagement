@@ -7,7 +7,7 @@ namespace TestTask.WebApi.Endpoints;
 
 public static class SpecialityEndpoints
 {
-    public static readonly string Route = $"{Constants.GlobalRoute}/specialities";
+    private const string Route = $"{Constants.GlobalRoute}/specialities";
 
     public static void MapSpecialityEndpoints(this IEndpointRouteBuilder builder)
     {
