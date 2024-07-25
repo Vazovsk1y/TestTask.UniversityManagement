@@ -8,11 +8,11 @@ public static class SqlConstants
 {
     public static class StudentService
     {
-        public static readonly string GET_STUDENT_DTO_BY_ID_SQL = $@"
+        public const string GetStudentDTOByIdSql = $@"
                SELECT 
                    s.{nameof(Student.id)} AS {nameof(StudentDTO.Id)}, 
-                   d.{nameof(Department.id)} AS {nameof(StudentDTO.DepartamentId)}, 
-                   d.{nameof(Department.title)} AS {nameof(StudentDTO.DepartamentTitle)}, 
+                   d.{nameof(Department.id)} AS {nameof(StudentDTO.DepartmentId)}, 
+                   d.{nameof(Department.title)} AS {nameof(StudentDTO.DepartmentTitle)}, 
                    g.{nameof(Group.id)} AS {nameof(StudentDTO.GroupId)}, 
                    g.{nameof(Group.title)} AS {nameof(StudentDTO.GroupTitle)}, 
                    s.{nameof(Student.birth_date)} AS {nameof(StudentDTO.BirthDate)}, 
@@ -35,7 +35,7 @@ public static class SqlConstants
 
     public static class SpecialityService
     {
-        public static readonly string GET_ALL_SPECIALITY_DTO_SQL = $@"
+        public const string GetAllSpecialityDTOSql = $@"
                SELECT 
                    sp.{nameof(Speciality.id)} AS {nameof(SpecialityDTO.Id)}, 
                    sp.{nameof(Speciality.title)} AS {nameof(SpecialityDTO.Title)}, 
@@ -43,13 +43,13 @@ public static class SqlConstants
                FROM {Tables.Specialities} sp";
     }
 
-    public static class DepartamentService
+    public static class DepartmentService
     {
-        public static readonly string GET_ALL_DEPARTAMENT_DTO_WITH_PAGING_SQL = $@"
+        public const string GetAllDepartmentDTOWithPagingSql = $@"
               SELECT 
-                  d.{nameof(Department.id)} AS {nameof(DepartamentDTO.Id)},
-                  d.{nameof(Department.title)} AS {nameof(DepartamentDTO.Title)},
-                  d.{nameof(Department.description)} AS {nameof(DepartamentDTO.Description)},
+                  d.{nameof(Department.id)} AS {nameof(DepartmentDTO.Id)},
+                  d.{nameof(Department.title)} AS {nameof(DepartmentDTO.Title)},
+                  d.{nameof(Department.description)} AS {nameof(DepartmentDTO.Description)},
                   g.{nameof(Group.id)} AS {nameof(GroupDTO.GroupId)},
                   g.{nameof(Group.title)} AS {nameof(GroupDTO.Title)},
                   COUNT(s.{nameof(Student.id)}) AS {nameof(GroupDTO.StudentsCount)}

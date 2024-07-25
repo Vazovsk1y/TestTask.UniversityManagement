@@ -16,7 +16,7 @@ public static class DepartamentEndpoints
         group.MapGet(string.Empty, GetDepartamentsPage);
     }
 
-    private static async Task<IResult> GetDepartamentsPage([AsParameters]PagingOptionsModel model, [FromServices]IDepartamentService departamentService, CancellationToken cancellationToken)
+    private static async Task<IResult> GetDepartamentsPage([AsParameters]PagingOptionsModel model, [FromServices]IDepartmentService departmentService, CancellationToken cancellationToken)
     {
         var dtoResult = model.ToOptions();
         if (dtoResult.IsFailure)
@@ -25,7 +25,7 @@ public static class DepartamentEndpoints
         }
 
         var pagingOptions = dtoResult.Value;
-        var pageResult = await departamentService.GetAsync(pagingOptions, cancellationToken);
+        var pageResult = await departmentService.GetAsync(pagingOptions, cancellationToken);
 
         return pageResult.IsSuccess ? TypedResults.Ok(pageResult.Value) : TypedResults.BadRequest(pageResult.ErrorMessage);
     }

@@ -2,8 +2,8 @@
 
 public record StudentDTO(
     Guid Id, 
-    Guid DepartamentId, 
-    string DepartamentTitle, 
+    Guid DepartmentId, 
+    string DepartmentTitle, 
     Guid GroupId, 
     string GroupTitle, 
     DateOnly BirthDate, 

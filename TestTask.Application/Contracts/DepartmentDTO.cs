@@ -1,6 +1,6 @@
 ﻿namespace TestTask.Application.Contracts;
 
-public record DepartamentDTO(
+public record DepartmentDTO(
     Guid Id,
     string Title,
     string Description)

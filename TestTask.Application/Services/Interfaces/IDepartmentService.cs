@@ -4,7 +4,7 @@ using TestTask.Application.Shared;
 
 namespace TestTask.Application.Services.Interfaces;
 
-public interface IDepartamentService
+public interface IDepartmentService
 {
-    Task<Result<DepartamentsPage>> GetAsync(PagingOptions pagingOptions, CancellationToken cancellationToken = default);
+    Task<Result<DepartmentsPage>> GetAsync(PagingOptions pagingOptions, CancellationToken cancellationToken = default);
 }

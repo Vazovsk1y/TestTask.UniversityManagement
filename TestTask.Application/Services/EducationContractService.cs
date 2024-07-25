@@ -14,19 +14,15 @@ internal class EducationContractService(
     IValidator<EducationContractRenewalDTO> educationContractRenewalDtoValidator,
     ICalendar calendar) : IEducationContractService
 {
-    private readonly IDbConnectionFactory _connectionFactory = connectionFactory;
-    private readonly IValidator<EducationContractRenewalDTO> _educationContractRenewalDtoValidator = educationContractRenewalDtoValidator;
-    private readonly ICalendar _calendar = calendar;
-
     public async Task<Result> RenewalAsync(EducationContractRenewalDTO renewalDTO, CancellationToken cancellationToken = default)
     {
-        var validationResult = _educationContractRenewalDtoValidator.Validate(renewalDTO);
+        var validationResult = educationContractRenewalDtoValidator.Validate(renewalDTO);
         if (!validationResult.IsValid)
         {
             return Result.Failure(validationResult.ToString());
         }
 
-        using var connection = _connectionFactory.Create();
+        using var connection = connectionFactory.Create();
         connection.Open();
 
         var previousContract = await connection.GetByOrDefaultAsync<EducationContract, Guid>(Tables.EducationContracts, nameof(EducationContract.student_id), renewalDTO.StudentId);
@@ -44,7 +40,7 @@ internal class EducationContractService(
         {
             speciality_id = renewalDTO.SpecialityId,
             student_id = previousContract.student_id,
-            conclusion_date = _calendar.Today(),
+            conclusion_date = calendar.Today(),
             admission_date = renewalDTO.AdmissionDate,
             graduation_date = renewalDTO.GraduationDate,
             education_form = renewalDTO.EducationForm.Trim(),
