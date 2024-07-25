@@ -1,6 +1,6 @@
 ﻿using TestTask.Application.Contracts;
-using TestTask.DAL.Constants;
-using TestTask.DAL.Models;
+using TestTask.DAL.PostgreSQL.Constants;
+using TestTask.DAL.PostgreSQL.Models;
 
 namespace TestTask.Application;
 
@@ -8,11 +8,11 @@ public static class SqlConstants
 {
     public static class StudentService
     {
-        public static readonly string GET_STUDENT_DTO_BY_ID_SQL = $@"
+        public const string GetStudentDTOByIdSql = $@"
                SELECT 
                    s.{nameof(Student.id)} AS {nameof(StudentDTO.Id)}, 
-                   d.{nameof(Departament.id)} AS {nameof(StudentDTO.DepartamentId)}, 
-                   d.{nameof(Departament.title)} AS {nameof(StudentDTO.DepartamentTitle)}, 
+                   d.{nameof(Department.id)} AS {nameof(StudentDTO.DepartmentId)}, 
+                   d.{nameof(Department.title)} AS {nameof(StudentDTO.DepartmentTitle)}, 
                    g.{nameof(Group.id)} AS {nameof(StudentDTO.GroupId)}, 
                    g.{nameof(Group.title)} AS {nameof(StudentDTO.GroupTitle)}, 
                    s.{nameof(Student.birth_date)} AS {nameof(StudentDTO.BirthDate)}, 
@@ -27,7 +27,7 @@ public static class SqlConstants
                    sp.{nameof(Speciality.code)} AS {nameof(StudentDTO.SpecialityCode)}
                FROM {Tables.Students} s
                INNER JOIN {Tables.Groups} g ON s.{nameof(Student.group_id)} = g.{nameof(Group.id)}
-               INNER JOIN {Tables.Departaments} d ON g.{nameof(Group.departament_id)} = d.{nameof(Departament.id)}
+               INNER JOIN {Tables.Departments} d ON g.{nameof(Group.departament_id)} = d.{nameof(Department.id)}
                INNER JOIN {Tables.EducationContracts} ec ON s.{nameof(Student.id)} = ec.{nameof(EducationContract.student_id)}
                INNER JOIN {Tables.Specialities} sp ON ec.{nameof(EducationContract.speciality_id)} = sp.{nameof(Speciality.id)}
                WHERE s.{nameof(Student.id)} = @id";
@@ -35,7 +35,7 @@ public static class SqlConstants
 
     public static class SpecialityService
     {
-        public static readonly string GET_ALL_SPECIALITY_DTO_SQL = $@"
+        public const string GetAllSpecialityDTOSql = $@"
                SELECT 
                    sp.{nameof(Speciality.id)} AS {nameof(SpecialityDTO.Id)}, 
                    sp.{nameof(Speciality.title)} AS {nameof(SpecialityDTO.Title)}, 
@@ -43,29 +43,29 @@ public static class SqlConstants
                FROM {Tables.Specialities} sp";
     }
 
-    public static class DepartamentService
+    public static class DepartmentService
     {
-        public static readonly string GET_ALL_DEPARTAMENT_DTO_WITH_PAGING_SQL = $@"
+        public const string GetAllDepartmentDTOWithPagingSql = $@"
               SELECT 
-                  d.{nameof(Departament.id)} AS {nameof(DepartamentDTO.Id)},
-                  d.{nameof(Departament.title)} AS {nameof(DepartamentDTO.Title)},
-                  d.{nameof(Departament.description)} AS {nameof(DepartamentDTO.Description)},
+                  d.{nameof(Department.id)} AS {nameof(DepartmentDTO.Id)},
+                  d.{nameof(Department.title)} AS {nameof(DepartmentDTO.Title)},
+                  d.{nameof(Department.description)} AS {nameof(DepartmentDTO.Description)},
                   g.{nameof(Group.id)} AS {nameof(GroupDTO.GroupId)},
                   g.{nameof(Group.title)} AS {nameof(GroupDTO.Title)},
                   COUNT(s.{nameof(Student.id)}) AS {nameof(GroupDTO.StudentsCount)}
               FROM (
                   SELECT 
-                      d.{nameof(Departament.id)},
-                      d.{nameof(Departament.title)},
-                      d.{nameof(Departament.description)}
-                  FROM {Tables.Departaments} as d
-                  ORDER BY d.{nameof(Departament.title)}
+                      d.{nameof(Department.id)},
+                      d.{nameof(Department.title)},
+                      d.{nameof(Department.description)}
+                  FROM {Tables.Departments} as d
+                  ORDER BY d.{nameof(Department.title)}
                   OFFSET @offset ROWS
                   FETCH NEXT @limit ROWS ONLY
               ) AS d
-              LEFT JOIN {Tables.Groups} as g ON g.{nameof(Group.departament_id)} = d.{nameof(Departament.id)}
+              LEFT JOIN {Tables.Groups} as g ON g.{nameof(Group.departament_id)} = d.{nameof(Department.id)}
               LEFT JOIN {Tables.Students} as s ON s.{nameof(Student.group_id)} = g.{nameof(Group.id)}
-              GROUP BY g.{nameof(Group.id)}, d.{nameof(Departament.id)}, d.{nameof(Departament.title)}, d.{nameof(Departament.description)}
-              ORDER BY d.{nameof(Departament.title)}";
+              GROUP BY g.{nameof(Group.id)}, d.{nameof(Department.id)}, d.{nameof(Department.title)}, d.{nameof(Department.description)}
+              ORDER BY d.{nameof(Department.title)}";
     }
 }

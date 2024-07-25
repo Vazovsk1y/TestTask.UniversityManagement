@@ -4,10 +4,10 @@ using Microsoft.Extensions.Logging;
 using TestTask.Application.Contracts;
 using TestTask.Application.Services.Interfaces;
 using TestTask.Application.Shared;
-using TestTask.DAL.Constants;
-using TestTask.DAL.Extensions;
-using TestTask.DAL.Interfaces;
-using TestTask.DAL.Models;
+using TestTask.DAL.PostgreSQL.Constants;
+using TestTask.DAL.PostgreSQL.Extensions;
+using TestTask.DAL.PostgreSQL.Interfaces;
+using TestTask.DAL.PostgreSQL.Models;
 
 namespace TestTask.Application.Services;
 
@@ -16,13 +16,11 @@ internal class StudentService(
     IValidator<StudentUpdateDTO> studentUpdateDTOvalidator,
     ILogger<StudentService> logger) : IStudentService
 {
-    private readonly IDbConnectionFactory _dbConnectionFactory = dbConnectionFactory;
-    private readonly IValidator<StudentUpdateDTO> _studentUpdateDTOvalidator = studentUpdateDTOvalidator;
     private readonly ILogger _logger = logger;
 
     public async Task<Result> ExpelAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        using var connection = _dbConnectionFactory.Create();
+        using var connection = dbConnectionFactory.Create();
         connection.Open();
 
         bool studentExists = await connection.IsExistsByIdAsync(Tables.Students, id);
@@ -48,28 +46,23 @@ internal class StudentService(
 
     public async Task<Result<StudentDTO>> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
-        using var connection = _dbConnectionFactory.Create();
+        using var connection = dbConnectionFactory.Create();
         connection.Open();
 
-        var student = await connection.QuerySingleOrDefaultAsync<StudentDTO>(SqlConstants.StudentService.GET_STUDENT_DTO_BY_ID_SQL, new { id });
+        var student = await connection.QuerySingleOrDefaultAsync<StudentDTO>(SqlConstants.StudentService.GetStudentDTOByIdSql, new { id });
 
-        if (student is null)
-        {
-            return Result.Failure<StudentDTO>(Errors.EntityNotFound(nameof(Student)));
-        }
-
-        return student;
+        return student ?? Result.Failure<StudentDTO>(Errors.EntityNotFound(nameof(Student)));
     }
 
     public async Task<Result> UpdateAsync(StudentUpdateDTO updateDTO, CancellationToken cancellationToken = default)
     {
-        var validationResult = _studentUpdateDTOvalidator.Validate(updateDTO);
+        var validationResult = studentUpdateDTOvalidator.Validate(updateDTO);
         if (!validationResult.IsValid)
         {
             return Result.Failure(validationResult.ToString());
         }
 
-        using var connection = _dbConnectionFactory.Create();
+        using var connection = dbConnectionFactory.Create();
         connection.Open();
 
         var student = await connection.GetByIdOrDefaultAsync<Student>(Tables.Students, updateDTO.Id);

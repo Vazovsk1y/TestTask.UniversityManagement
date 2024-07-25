@@ -15,7 +15,7 @@ public static class Registrator
         services.AddScoped<ISpecialityService, SpecialityService>();
         services.AddScoped<IEducationContractService, EducationContractService>();
         services.AddScoped<ICalendar, Calendar>();
-        services.AddScoped<IDepartamentService, DepartamentService>();
+        services.AddScoped<IDepartmentService, DepartmentService>();
 
         return services;
     }

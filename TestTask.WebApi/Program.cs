@@ -1,9 +1,10 @@
-using TestTask.DAL.Extensions;
 using TestTask.Application.Extensions;
 using TestTask.WebApi.Extensions;
 using TestTask.WebApi.Endpoints;
 using TestTask.WebApi;
 using Serilog;
+using TestTask.DAL.PostgreSQL.Extensions;
+using TestTask.WebApi.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,7 +35,7 @@ app.UseHttpsRedirection();
 app.MapStudentEndpoints();
 app.MapSpecialityEndpoints();
 app.MapEducationContractEndpoints();
-app.MapDepartamentEndpoints();
+app.MapDepartmentEndpoints();
 
 if (app.Environment.IsDevelopment())
 {
